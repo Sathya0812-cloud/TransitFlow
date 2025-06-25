@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TransitFlow - Sign Up</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+
+    .card {
+      width: 850px;
+      height: 540px;
+      display: flex;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #fff;
+    }
+
+    .left {
+      background: linear-gradient(135deg, #dfe7fd, #a3c4f3);
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .left h1 {
+      font-size: 32px;
+      color: #1f3b99;
+    }
+
+    .right {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-title {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #1fc8db;
+    }
+
+    .checkbox {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #1fc8db;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .toggle {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .toggle a {
+      color: #1f3b99;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    
+
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <div class="left">
+        <img src="https://cdn-icons-png.flaticon.com/512/7438/7438847.png" alt="TransitFlow Illustration" style="width: 80%; max-width: 320px;">
+      </div>
+          
+    <div class="right">
+      <div class="form-title">Create Account</div>
+
+      <div class="form-group">
+        <input type="text" id="signupName" placeholder="Name" required>
+      </div>
+
+      <div class="form-group">
+        <input type="email" id="signupEmail" placeholder="Email" required>
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="signupPassword" placeholder="Password" required>
+      </div>
+
+      <div class="form-group">
+        <select id="userRole">
+          <option value="">Select Your Role</option>
+          <option value="Operator">Operator</option>
+          <option value="Driver">Driver</option>
+        </select>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="terms">
+        <label for="terms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+
+      <button class="btn" onclick="signup()">Sign Up</button>
+
+      <div class="toggle">Already have an account? <a href="login.html">Login</a></div>
+    </div>
+  </div>
+</div>
+<script>
+    function signup() {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const role = document.getElementById("userRole").value;
+      const termsChecked = document.getElementById("terms").checked;
+    
+      if (!name || !email || !password || !role) {
+        alert("Please fill in all fields and select your role.");
+        return;
+      }
+    
+      if (!termsChecked) {
+        alert("You must agree to the terms and privacy policy.");
+        return;
+      }
+    
+      // Send data to PHP backend
+      fetch("signup.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&role=${encodeURIComponent(role)}`
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert(result);
+        if (result.includes("successful")) {
+          window.location.href = "login.html";
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Signup failed. Try again.");
+      });
+    }
+    </script>
+    
+
+</body>
+</html>

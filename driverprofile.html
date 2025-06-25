@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driver Profile - TransitFlow</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #1dd3c7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .license-img {
+      width: 200px;
+      height: auto;
+      display: block;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 6px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="profileFormContainer">
+    <h2>Driver Profile</h2>
+    <label>First Name</label>
+    <input type="text" id="fname" />
+
+    <label>Last Name</label>
+    <input type="text" id="lname" />
+
+    <label>Gender</label>
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+
+    <label>Country</label>
+    <select id="country">
+      <option value="">Select Country</option>
+      <option>India</option>
+      <option>USA</option>
+    </select>
+
+    <label>Phone Number</label>
+    <input type="text" id="phone" />
+
+    <label>Pincode</label>
+    <input type="text" id="pincode" />
+
+    <label>Email Address</label>
+    <input type="email" id="email" />
+
+    <label>Vehicle Type</label>
+    <input type="text" id="vehicle" />
+
+    <label>Upload License</label>
+    <input type="file" id="license" accept="image/*" />
+
+    <button onclick="saveProfile()">Submit</button>
+  </div>
+
+  <div class="container" id="profileViewContainer" style="display: none;">
+    <h2>Driver Profile Details</h2>
+    <p><strong>First Name:</strong> <span id="vfname"></span></p>
+    <p><strong>Last Name:</strong> <span id="vlname"></span></p>
+    <p><strong>Gender:</strong> <span id="vgender"></span></p>
+    <p><strong>Country:</strong> <span id="vcountry"></span></p>
+    <p><strong>Phone:</strong> <span id="vphone"></span></p>
+    <p><strong>Pincode:</strong> <span id="vpincode"></span></p>
+    <p><strong>Email:</strong> <span id="vemail"></span></p>
+    <p><strong>Vehicle Type:</strong> <span id="vvehicle"></span></p>
+    <p><strong>License Image:</strong><br><img id="vlicense" class="license-img" /></p>
+
+    <div class="buttons">
+      <button onclick="goToDashboard()">Back to Dashboard</button>
+      <button onclick="editProfile()">Edit</button>
+    </div>
+  </div>
+
+  <script>
+    function saveProfile() {
+      const profile = {
+        fname: document.getElementById("fname").value,
+        lname: document.getElementById("lname").value,
+        gender: document.getElementById("gender").value,
+        country: document.getElementById("country").value,
+        phone: document.getElementById("phone").value,
+        pincode: document.getElementById("pincode").value,
+        email: document.getElementById("email").value,
+        vehicle: document.getElementById("vehicle").value
+      };
+
+      const fileInput = document.getElementById("license");
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        profile.license = e.target.result;
+        localStorage.setItem("driverProfile", JSON.stringify(profile));
+        showProfile();
+      };
+
+      if (fileInput.files[0]) {
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        profile.license = ""; // no image
+        localStorage.setItem("driverProfile", JSON.stringify(profile));
+        showProfile();
+      }
+    }
+
+    function showProfile() {
+      const profile = JSON.parse(localStorage.getItem("driverProfile"));
+      if (!profile) return;
+
+      document.getElementById("profileFormContainer").style.display = "none";
+      document.getElementById("profileViewContainer").style.display = "block";
+
+      document.getElementById("vfname").textContent = profile.fname;
+      document.getElementById("vlname").textContent = profile.lname;
+      document.getElementById("vgender").textContent = profile.gender;
+      document.getElementById("vcountry").textContent = profile.country;
+      document.getElementById("vphone").textContent = profile.phone;
+      document.getElementById("vpincode").textContent = profile.pincode;
+      document.getElementById("vemail").textContent = profile.email;
+      document.getElementById("vvehicle").textContent = profile.vehicle;
+
+      if (profile.license) {
+        const licenseImg = document.getElementById("vlicense");
+        licenseImg.src = profile.license;
+        licenseImg.style.display = "block";
+      } else {
+        document.getElementById("vlicense").style.display = "none";
+      }
+    }
+
+    function goToDashboard() {
+      window.location.href = "driverdashboard.html";
+    }
+
+    function editProfile() {
+      localStorage.removeItem("driverProfile");
+      window.location.reload();
+    }
+
+    // On page load: check if profile exists
+    window.onload = function() {
+      const profile = JSON.parse(localStorage.getItem("driverProfile"));
+      if (profile) {
+        showProfile();
+      }
+    }
+  </script>
+</body>
+</html>

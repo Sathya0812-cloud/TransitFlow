@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking History - TransitFlow</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f4f4f4;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1dd3c7;
+      padding: 30px 20px;
+      height: 100vh;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin: 15px 0;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .sidebar a.active {
+      background-color: white;
+      color: #1dd3c7;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .history-box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      max-width: 650px;
+    }
+
+    .booking-entry {
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 15px;
+    }
+
+    .status-button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      font-size: 14px;
+      border-radius: 8px;
+      float: right;
+      margin-top: -20px;
+      cursor: pointer;
+    }
+
+    .status-button:hover {
+      background-color: #c0392b;
+    }
+
+    strong {
+      width: 130px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="#">Dashboard Overview</a>
+    <a href="transportallocation.html">Book Transport</a>
+    <a href="bookinghistory.html" class="active">Booking History</a>
+    <a href="#">Track Trip</a>
+    <a href="#">Profile</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Booking History</h1>
+    <div class="history-box" id="historyBox">
+      <!-- All bookings will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const historyBox = document.getElementById('historyBox');
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+    function displayBookings() {
+      if (bookings.length === 0) {
+        historyBox.innerHTML = "<p>No booking history found.</p>";
+        return;
+      }
+
+      let html = '';
+      bookings.forEach((booking, index) => {
+        html += `
+          <div class="booking-entry">
+            <div><strong>Travel Date:</strong> ${booking.date}</div>
+            <div><strong>Pickup Location:</strong> ${booking.pickup}</div>
+            <div><strong>Drop-off Location:</strong> ${booking.dropoff}</div>
+            <div><strong>Vehicle Number:</strong> ${booking.vehicle}</div>
+            <div><strong>Driver Name:</strong> ${booking.driver}</div>
+            <div><strong>Type of Goods:</strong> ${booking.goods}</div>
+            <button class="status-button" onclick="deleteBooking(${index})">Clear</button>
+          </div>
+        `;
+      });
+
+      historyBox.innerHTML = html;
+    }
+
+    function deleteBooking(index) {
+      bookings.splice(index, 1);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      displayBookings();
+    }
+
+    displayBookings();
+  </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Trips - TransitFlow</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      display: flex;
+      background-color: #f4f4f4;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #1dd3c7;
+      padding: 30px 20px;
+      height: 100vh;
+      color: white;
+    }
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin: 15px 0;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+    .sidebar a.active {
+      background-color: white;
+      color: #1dd3c7;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #eee;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tab-buttons .active {
+      background-color: #1dd3c7;
+      color: white;
+    }
+
+    .trip-box {
+      background-color: #f5f1f1;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+
+    .trip {
+      padding: 15px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .trip:last-child {
+      border-bottom: none;
+    }
+
+    .trip p {
+      margin: 5px 0;
+      font-size: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+      display: inline-block;
+      width: 160px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="driverdashboard.html">Dashboard Overview</a>
+    <a href="mytrips.html" class="active">My Trips</a>
+    <a href="#">Trip Details</a>
+    <a href="driverprofile.html">Profile</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>My Trips</h1>
+    <div class="tab-buttons">
+      <button class="active" onclick="filterTrips('all')">All Trips</button>
+      <button onclick="filterTrips('inprogress')">In Progress</button>
+      <button onclick="filterTrips('cancelled')">Cancelled</button>
+    </div>
+
+    <div class="trip-box" id="tripList">
+      <!-- Trip entries will be shown here -->
+    </div>
+  </div>
+
+  <script>
+    const tripList = document.getElementById("tripList");
+    const buttons = document.querySelectorAll(".tab-buttons button");
+
+    const trips = JSON.parse(localStorage.getItem("trips")) || [];
+
+    function renderTrips(type = 'all') {
+      tripList.innerHTML = '';
+
+      let filtered = trips;
+      if (type === 'inprogress') {
+        filtered = trips.filter(t => t.status === "In Progress");
+      } else if (type === 'cancelled') {
+        filtered = trips.filter(t => t.status === "Cancelled");
+      }
+
+      if (filtered.length === 0) {
+        tripList.innerHTML = "<p>No trips found.</p>";
+        return;
+      }
+
+      filtered.forEach(trip => {
+        const tripHTML = `
+          <div class="trip">
+            <p><span class="label">Trip ID:</span> ${trip.id}</p>
+            <p><span class="label">Pickup Location:</span> ${trip.pickup}</p>
+            <p><span class="label">Drop-off Location:</span> ${trip.dropoff}</p>
+            <p><span class="label">Type of Goods:</span> ${trip.goods}</p>
+            <p><span class="label">Quantity:</span> ${trip.quantity}</p>
+            <p><span class="label">Date:</span> ${trip.date}</p>
+          </div>
+        `;
+        tripList.innerHTML += tripHTML;
+      });
+    }
+
+    function filterTrips(type) {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      document.querySelector(`.tab-buttons button[onclick="filterTrips('${type}')"]`).classList.add("active");
+      renderTrips(type);
+    }
+
+    // Sample trips for demo (remove this block in live)
+    if (!localStorage.getItem("trips")) {
+      const sampleTrips = [
+        {
+          id: "ABCSD4658",
+          pickup: "127, West Street, Sherling",
+          dropoff: "76, East Road, Sherling",
+          goods: "Iron Sheets",
+          quantity: "50 Kg",
+          date: "23/06/2025",
+          status: "In Progress"
+        },
+        {
+          id: "SAGSB7364",
+          pickup: "576, Lalpet",
+          dropoff: "561, Chennai",
+          goods: "Pipes",
+          quantity: "10 Kg",
+          date: "20/06/2025",
+          status: "Cancelled"
+        }
+      ];
+      localStorage.setItem("trips", JSON.stringify(sampleTrips));
+    }
+
+    renderTrips(); // Load all trips on page load
+  </script>
+</body>
+</html>

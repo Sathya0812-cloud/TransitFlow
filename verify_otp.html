@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify OTP</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding-top: 50px; }
+    input, button { padding: 10px; margin: 10px; width: 50px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Enter Verification Code</h2>
+  <form onsubmit="verifyOTP(); return false;">
+    <input id="d1" maxlength="1" required>
+    <input id="d2" maxlength="1" required>
+    <input id="d3" maxlength="1" required>
+    <input id="d4" maxlength="1" required><br>
+    <button type="submit">Send</button>
+  </form>
+  <p>If you didn’t receive a code, <a href="#" onclick="resendOTP()">Resend</a></p>
+
+  <script>
+    function verifyOTP() {
+      const entered = document.getElementById("d1").value +
+                      document.getElementById("d2").value +
+                      document.getElementById("d3").value +
+                      document.getElementById("d4").value;
+
+      const stored = localStorage.getItem("otp");
+
+      if (entered === stored) {
+        alert("OTP Verified");
+        window.location.href = "change_password.html";
+      } else {
+        alert("Invalid OTP");
+      }
+    }
+
+    function resendOTP() {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem("otp", otp);
+      alert("New OTP Sent (For testing: " + otp + ")");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Availability - TransitFlow</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f4f4f4;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1dd3c7;
+      padding: 30px 20px;
+      height: 100vh;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin: 15px 0;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .sidebar a.active {
+      background-color: white;
+      color: #1dd3c7;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #1dd3c7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background-color: #16b3a9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="driveravailability.html">Driver Availability</a>
+    <a href="vehicleavailability.html" class="active">Vehicle Availability</a>
+  </div>
+
+  <div class="main">
+    <h1>Availability Checking</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Vehicle ID</th>
+          <th>Type</th>
+          <th>Capacity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>VH001</td><td>Truck</td><td>20 tone</td><td>Available</td></tr>
+        <tr><td>VH002</td><td>Mini Lorry</td><td>10 tone</td><td>Available</td></tr>
+        <tr><td>VH003</td><td>Lorry</td><td>25 tone</td><td>Available</td></tr>
+        <tr><td>VH004</td><td>Truck</td><td>20 tone</td><td>Available</td></tr>
+      </tbody>
+    </table>
+    <br />
+    <a href="transportallocation.html"><button class="back-btn">Go Back</button></a>
+  </div>
+
+</body>
+</html>
