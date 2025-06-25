@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transport Allocation - TransitFlow</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1dd3c7;
+      height: 100vh;
+      padding: 30px 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin: 15px 0;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .sidebar a.active {
+      background-color: white;
+      color: #1dd3c7;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .form-box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .form-box label {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    .form-box input,
+    .form-box select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row > div {
+      flex: 1;
+    }
+
+    .btn-row {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #1dd3c7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      background-color: #0bb1a3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="#">Dashboard Overview</a>
+    <a href="transportallocation.html" class="active">Transport Allocation</a>
+    <a href="bookinghistory.html">Booking History</a>
+    <a href="#">Track Trip</a>
+    <a href="#">Profile</a>
+    <a href="signup.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Transport Allocation</h1>
+    <div class="form-box">
+      <label for="date">Travel Date</label>
+      <input type="date" id="date" />
+
+      <div class="form-row">
+        <div>
+          <label for="pickup">Pickup Location</label>
+          <input type="text" id="pickup" />
+        </div>
+        <div>
+          <label for="dropoff">Drop-off Location</label>
+          <input type="text" id="dropoff" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="vehicle">Vehicle Number</label>
+          <input type="text" id="vehicle" />
+        </div>
+        <div>
+          <label for="driver">Driver Name</label>
+          <input type="text" id="driver" />
+        </div>
+      </div>
+
+      <label for="goods">Type of Goods</label>
+      <select id="goods">
+        <option value="">Search.....</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Groceries">Groceries</option>
+        <option value="Furniture">Furniture</option>
+      </select>
+
+      <div class="btn-row">
+        <button class="btn" onclick="checkAvailability()">Check Availability</button>
+        <button class="btn" onclick="bookTransport()">Book Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function checkAvailability() {
+      
+        window.location.href="driveravailability.html";
+    }
+
+    function bookTransport() {
+      const date = document.getElementById("date").value;
+      const pickup = document.getElementById("pickup").value;
+      const dropoff = document.getElementById("dropoff").value;
+      const vehicle = document.getElementById("vehicle").value;
+      const driver = document.getElementById("driver").value;
+      const goods = document.getElementById("goods").value;
+
+      if (!date || !pickup || !dropoff || !vehicle || !driver || !goods) {
+        alert("Please fill in all fields before booking.");
+        return;
+      }
+
+      const newBooking = { date, pickup, dropoff, vehicle, driver, goods };
+
+      let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      bookings.push(newBooking);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+
+      alert("Booking saved successfully!");
+      
+      // Optional: Clear form fields
+      document.getElementById("date").value = "";
+      document.getElementById("pickup").value = "";
+      document.getElementById("dropoff").value = "";
+      document.getElementById("vehicle").value = "";
+      document.getElementById("driver").value = "";
+      document.getElementById("goods").value = "";
+    }
+  </script>
+</body>
+</html>

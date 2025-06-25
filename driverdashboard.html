@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driver Dashboard - TransitFlow</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f9f9f9;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1dd3c7;
+      padding: 30px 20px;
+      color: white;
+      height: 100vh;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin: 15px 0;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .sidebar a.active {
+      background-color: white;
+      color: #1dd3c7;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .main p {
+      margin-bottom: 30px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .dashboard-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .box {
+      background-color: #fdeaea;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .box h3 {
+      font-size: 15px;
+      color: #1dd3c7;
+      margin-bottom: 8px;
+    }
+
+    .box p {
+      font-size: 14px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="driverdashboard.html" class="active">Dashboard Overview</a>
+    <a href="mytrips.html">My Trips</a>
+    <a href="#">Trip Details</a>
+    <a href="driverprofile.html">Profile</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Welcome, Driver !</h1>
+    <p>Here you can view your trips, update trip status, and manage your profile.</p>
+
+    <div class="dashboard-boxes">
+      <div class="box">
+        <h3>Next Trip</h3>
+        <p>Today: Chennai to Trichy at 3:00 PM</p>
+      </div>
+      <div class="box">
+        <h3>Total Trip This Week</h3>
+        <p>7 Trips Completed</p>
+      </div>
+      <div class="box">
+        <h3>Status</h3>
+        <p>Available for Assignment</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
