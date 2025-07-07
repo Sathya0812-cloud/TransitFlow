@@ -1,36 +1,45 @@
 <?php
-// Database connection settings
-$servername = "localhost";
-$username = "root"; // change if needed
-$password = "";     // change if you have a DB password
-$dbname = "transitflow"; // your database name
+// Database connection
+$host = 'localhost';
+$db   = 'transitflow';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Database connection failed: " . $e->getMessage();
+    exit;
 }
 
-// Get data from frontend (JS fetch will send these via POST)
-$name = $_POST['name'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$role = $_POST['role'];
+// Get POST data
+$name     = $_POST['name'] ?? '';
+$email    = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
+$role     = $_POST['role'] ?? '';
 
-// Hash password for security
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-// Insert into signup table
-$sql = "INSERT INTO signup (name, email, password, role) 
-        VALUES ('$name', '$email', '$hashedPassword', '$role')";
-
-if ($conn->query($sql) === TRUE) {
-  echo "Signup successful!";
-} else {
-  echo "Error: " . $conn->error;
+// Validate input
+if (!$name || !$email || !$password || !$role) {
+    echo "Please fill in all fields.";
+    exit;
 }
 
-$conn->close();
+// Check for duplicate email
+$stmt = $pdo->prepare("SELECT email FROM signup WHERE email = ?");
+$stmt->execute([$email]);
+
+if ($stmt->rowCount() > 0) {
+    echo "Email already registered.";
+    exit;
+}
+
+// 🚫 No hashing, store raw password directly
+$stmt = $pdo->prepare("INSERT INTO signup (name, email, password, role) VALUES (?, ?, ?, ?)");
+$success = $stmt->execute([$name, $email, $password, $role]);
+
+echo $success ? "Signup successful!" : "Signup failed. Try again.";
 ?>

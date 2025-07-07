@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Vehicles - TransitFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: #11d3c6;
+      height: 100vh;
+      padding: 30px 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 20px;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #0fbcb1;
+    }
+
+    .sidebar a.active {
+      background-color: #f5f5f5;
+      color: #222;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fbeeee;
+      color: #333;
+    }
+
+    button {
+      padding: 5px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .active-btn {
+      background-color: #1dd3c7;
+      color: white;
+    }
+
+    .inactive-btn {
+      background-color: #ccc;
+      color: #444;
+    }
+
+    .edit-btn {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    .add-btn {
+      margin-top: 15px;
+      background-color: #eee;
+      color: #000;
+      border: 1px solid #aaa;
+      margin-right: 10px;
+    }
+
+    #addVehicleForm {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #aaa;
+      width: 300px;
+      background-color: white;
+    }
+
+    #addVehicleForm input {
+      width: 100%;
+      padding: 6px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="manageoperator.html">Manage Operator</a>
+    <a href="managedrivers.html">Manage Drivers</a>
+    <a class="active" href="managevehicles.html">Manage Vehicles</a>
+    <a href="manageroute.html">Manage Route</a>
+    <a href="paymentlogs.html">Payment Logs</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Manage Vehicles</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Vehicle Type</th>
+          <th>License Plate</th>
+          <th>Capacity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="vehicleTable">
+        <tr>
+          <td><span class="view">2345</span><input class="edit" type="text" value="2345" style="display:none;"></td>
+          <td><span class="view">Truck</span><input class="edit" type="text" value="Truck" style="display:none;"></td>
+          <td><span class="view">ASD 3645</span><input class="edit" type="text" value="ASD 3645" style="display:none;"></td>
+          <td><span class="view">50</span><input class="edit" type="number" value="50" style="display:none;"></td>
+          <td><button class="active-btn" onclick="toggleStatus(this)">Active</button></td>
+        </tr>
+        <tr>
+          <td><span class="view">6768</span><input class="edit" type="text" value="6768" style="display:none;"></td>
+          <td><span class="view">Lorry</span><input class="edit" type="text" value="Lorry" style="display:none;"></td>
+          <td><span class="view">ROM 983</span><input class="edit" type="text" value="ROM 983" style="display:none;"></td>
+          <td><span class="view">30</span><input class="edit" type="number" value="30" style="display:none;"></td>
+          <td><button class="inactive-btn" onclick="toggleStatus(this)">Inactive</button></td>
+        </tr>
+        <tr>
+          <td><span class="view">3486</span><input class="edit" type="text" value="3486" style="display:none;"></td>
+          <td><span class="view">Van</span><input class="edit" type="text" value="Van" style="display:none;"></td>
+          <td><span class="view">DFE 2516</span><input class="edit" type="text" value="DFE 2516" style="display:none;"></td>
+          <td><span class="view">20</span><input class="edit" type="number" value="20" style="display:none;"></td>
+          <td><button class="active-btn" onclick="toggleStatus(this)">Active</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="add-btn" onclick="toggleAddForm()">Add Vehicle</button>
+    <button class="edit-btn" onclick="toggleEditMode(this)">Edit</button>
+
+    <div id="addVehicleForm">
+      <input type="text" id="newId" placeholder="ID">
+      <input type="text" id="newType" placeholder="Vehicle Type">
+      <input type="text" id="newPlate" placeholder="License Plate">
+      <input type="number" id="newCapacity" placeholder="Capacity">
+      <input type="text" id="newStatus" placeholder="Active/Inactive">
+      <button onclick="addVehicle()">Add Vehicle</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleStatus(btn) {
+      if (btn.classList.contains("active-btn")) {
+        btn.classList.remove("active-btn");
+        btn.classList.add("inactive-btn");
+        btn.textContent = "Inactive";
+      } else {
+        btn.classList.remove("inactive-btn");
+        btn.classList.add("active-btn");
+        btn.textContent = "Active";
+      }
+    }
+
+    function toggleEditMode(button) {
+      const rows = document.querySelectorAll("#vehicleTable tr");
+      const editing = button.textContent === "Edit";
+
+      rows.forEach(row => {
+        const views = row.querySelectorAll(".view");
+        const edits = row.querySelectorAll(".edit");
+
+        views.forEach((v, i) => {
+          if (editing) {
+            v.style.display = "none";
+            edits[i].style.display = "inline-block";
+          } else {
+            v.textContent = edits[i].value;
+            v.style.display = "inline-block";
+            edits[i].style.display = "none";
+          }
+        });
+      });
+
+      button.textContent = editing ? "Save" : "Edit";
+    }
+
+    function toggleAddForm() {
+      const form = document.getElementById("addVehicleForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    function addVehicle() {
+      const id = document.getElementById("newId").value;
+      const type = document.getElementById("newType").value;
+      const plate = document.getElementById("newPlate").value;
+      const cap = document.getElementById("newCapacity").value;
+      const stat = document.getElementById("newStatus").value.toLowerCase();
+
+      if (!id || !type || !plate || !cap || !stat) {
+        alert("All fields required.");
+        return;
+      }
+
+      const statusClass = stat === "active" ? "active-btn" : "inactive-btn";
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><span class="view">${id}</span><input class="edit" type="text" value="${id}" style="display:none;"></td>
+        <td><span class="view">${type}</span><input class="edit" type="text" value="${type}" style="display:none;"></td>
+        <td><span class="view">${plate}</span><input class="edit" type="text" value="${plate}" style="display:none;"></td>
+        <td><span class="view">${cap}</span><input class="edit" type="number" value="${cap}" style="display:none;"></td>
+        <td><button class="${statusClass}" onclick="toggleStatus(this)">${stat.charAt(0).toUpperCase() + stat.slice(1)}</button></td>
+      `;
+      document.getElementById("vehicleTable").appendChild(row);
+
+      document.getElementById("newId").value = "";
+      document.getElementById("newType").value = "";
+      document.getElementById("newPlate").value = "";
+      document.getElementById("newCapacity").value = "";
+      document.getElementById("newStatus").value = "";
+    }
+  </script>
+
+</body>
+</html>

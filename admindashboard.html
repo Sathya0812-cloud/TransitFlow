@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driver Dashboard - TransitFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: #11d3c6;
+      color: white;
+      height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 20px;
+      font-size: 16px;
+      transition: background 0.2s ease;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #0fbcb1;
+    }
+
+    .sidebar a.disabled {
+      background-color: #f5f5f5;
+      color: #999;
+      pointer-events: none;
+      font-weight: bold;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .main p {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #fbeeee;
+      padding: 20px;
+      border-radius: 12px;
+      width: 240px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #11d3c6;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a class="disabled" href="admindashboard.html">Driver Dashboard</a>
+    <a href="manageoperator.html">Manage Operator</a>
+    <a href="managedrivers.html">Manage Drivers</a>
+    <a href="managevehicles.html">Manage Vehicles</a>
+    <a href="manageroute.html">Manage Route</a>
+    <a href="paymentlogs.html">Payment Logs</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Welcome, Admin !</h1>
+    <p>Use the sidebar to manage users, trips, payments and monitor system performance.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Active Users</h3>
+        <p>52 Registered Users</p>
+      </div>
+      <div class="card">
+        <h3>Total Drivers</h3>
+        <p>18 Drivers Active</p>
+      </div>
+      <div class="card">
+        <h3>Vehicles available</h3>
+        <p>12 of 15 vehicles available</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

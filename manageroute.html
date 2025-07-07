@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Routes - TransitFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: #11d3c6;
+      height: 100vh;
+      padding: 30px 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 20px;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #0fbcb1;
+    }
+
+    .sidebar a.active {
+      background-color: #f5f5f5;
+      color: #222;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fbeeee;
+      color: #333;
+    }
+
+    button {
+      padding: 5px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      background-color: #eee;
+      cursor: pointer;
+    }
+
+    .form-buttons {
+      margin-top: 15px;
+    }
+
+    .form-buttons button {
+      margin-right: 10px;
+    }
+
+    #addRouteForm {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #aaa;
+      width: 300px;
+      background-color: white;
+    }
+
+    #addRouteForm input {
+      width: 100%;
+      padding: 6px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="manageoperator.html">Manage Operator</a>
+    <a href="managedrivers.html">Manage Drivers</a>
+    <a href="managevehicles.html">Manage Vehicles</a>
+    <a class="active" href="manageroute.html">Manage Route</a>
+    <a href="paymentlogs.html">Payment Logs</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Manage Routes</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Route Name</th>
+          <th>Start Location</th>
+          <th>End Location</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="routeTable">
+        <tr>
+          <td><span class="view">1</span><input class="edit" type="text" value="1" style="display:none;"></td>
+          <td><span class="view">Route A</span><input class="edit" type="text" value="Route A" style="display:none;"></td>
+          <td><span class="view">Central Station</span><input class="edit" type="text" value="Central Station" style="display:none;"></td>
+          <td><span class="view">Green Hills</span><input class="edit" type="text" value="Green Hills" style="display:none;"></td>
+          <td><button onclick="editRow(this)">Edit</button></td>
+        </tr>
+        <tr>
+          <td><span class="view">2</span><input class="edit" type="text" value="2" style="display:none;"></td>
+          <td><span class="view">Route B</span><input class="edit" type="text" value="Route B" style="display:none;"></td>
+          <td><span class="view">Downtown</span><input class="edit" type="text" value="Downtown" style="display:none;"></td>
+          <td><span class="view">Westside</span><input class="edit" type="text" value="Westside" style="display:none;"></td>
+          <td><button onclick="editRow(this)">Edit</button></td>
+        </tr>
+        <tr>
+          <td><span class="view">3</span><input class="edit" type="text" value="3" style="display:none;"></td>
+          <td><span class="view">Route C</span><input class="edit" type="text" value="Route C" style="display:none;"></td>
+          <td><span class="view">Uptown</span><input class="edit" type="text" value="Uptown" style="display:none;"></td>
+          <td><span class="view">Hilltop</span><input class="edit" type="text" value="Hilltop" style="display:none;"></td>
+          <td><button onclick="editRow(this)">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="form-buttons">
+      <button onclick="toggleForm()">Add Route</button>
+    </div>
+
+    <div id="addRouteForm">
+      <input type="text" id="routeId" placeholder="Id">
+      <input type="text" id="routeName" placeholder="Route Name">
+      <input type="text" id="startLoc" placeholder="Start Location">
+      <input type="text" id="endLoc" placeholder="End Location">
+      <button onclick="addRoute()">Add Route</button>
+    </div>
+  </div>
+
+  <script>
+    function editRow(btn) {
+      const row = btn.closest("tr");
+      const views = row.querySelectorAll(".view");
+      const edits = row.querySelectorAll(".edit");
+
+      if (btn.textContent === "Edit") {
+        views.forEach(v => v.style.display = "none");
+        edits.forEach(e => e.style.display = "inline-block");
+        btn.textContent = "Save";
+      } else {
+        views.forEach((v, i) => {
+          v.textContent = edits[i].value;
+          v.style.display = "inline-block";
+          edits[i].style.display = "none";
+        });
+        btn.textContent = "Edit";
+      }
+    }
+
+    function toggleForm() {
+      const form = document.getElementById("addRouteForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    function addRoute() {
+      const id = document.getElementById("routeId").value;
+      const name = document.getElementById("routeName").value;
+      const start = document.getElementById("startLoc").value;
+      const end = document.getElementById("endLoc").value;
+
+      if (!id || !name || !start || !end) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const tbody = document.getElementById("routeTable");
+      const newRow = document.createElement("tr");
+
+      newRow.innerHTML = `
+        <td><span class="view">${id}</span><input class="edit" type="text" value="${id}" style="display:none;"></td>
+        <td><span class="view">${name}</span><input class="edit" type="text" value="${name}" style="display:none;"></td>
+        <td><span class="view">${start}</span><input class="edit" type="text" value="${start}" style="display:none;"></td>
+        <td><span class="view">${end}</span><input class="edit" type="text" value="${end}" style="display:none;"></td>
+        <td><button onclick="editRow(this)">Edit</button></td>
+      `;
+
+      tbody.appendChild(newRow);
+
+      document.getElementById("routeId").value = "";
+      document.getElementById("routeName").value = "";
+      document.getElementById("startLoc").value = "";
+      document.getElementById("endLoc").value = "";
+    }
+  </script>
+
+</body>
+</html>

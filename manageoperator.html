@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Operators - TransitFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: #11d3c6;
+      height: 100vh;
+      padding: 30px 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 20px;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #0fbcb1;
+    }
+
+    .sidebar a.active {
+      background-color: #f5f5f5;
+      color: #222;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fbeeee;
+      color: #333;
+    }
+
+    button {
+      padding: 5px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .active-btn {
+      background-color: #1dd3c7;
+      color: white;
+    }
+
+    .inactive-btn {
+      background-color: #ccc;
+      color: #444;
+    }
+
+    .edit-btn {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 90%;
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a class="active" href="manageoperator.html">Manage Operator</a>
+    <a href="managedrivers.html">Manage Drivers</a>
+    <a href="managevehicles.html">Manage Vehicles</a>
+    <a href="manageroute.html">Manage Route</a>
+    <a href="paymentlogs.html">Payment Logs</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Manage Operators</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact No</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="operatorTable">
+        <tr>
+          <td><span class="view">John</span><input type="text" class="edit" value="John" style="display:none;"></td>
+          <td><span class="view">John@gmail.com</span><input type="email" class="edit" value="John@gmail.com" style="display:none;"></td>
+          <td><span class="view">4958674958</span><input type="text" class="edit" value="4958674958" style="display:none;"></td>
+          <td><button class="active-btn" onclick="toggleStatus(this)">Active</button></td>
+          <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+        </tr>
+        <tr>
+          <td><span class="view">Micheal</span><input type="text" class="edit" value="Micheal" style="display:none;"></td>
+          <td><span class="view">Micheal@gmail.com</span><input type="email" class="edit" value="Micheal@gmail.com" style="display:none;"></td>
+          <td><span class="view">92384759586</span><input type="text" class="edit" value="92384759586" style="display:none;"></td>
+          <td><button class="active-btn" onclick="toggleStatus(this)">Active</button></td>
+          <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function toggleStatus(btn) {
+      if (btn.classList.contains("active-btn")) {
+        btn.classList.remove("active-btn");
+        btn.classList.add("inactive-btn");
+        btn.textContent = "Inactive";
+      } else {
+        btn.classList.remove("inactive-btn");
+        btn.classList.add("active-btn");
+        btn.textContent = "Active";
+      }
+    }
+
+    function editRow(editBtn) {
+      const row = editBtn.closest('tr');
+      const viewFields = row.querySelectorAll('.view');
+      const editFields = row.querySelectorAll('.edit');
+
+      if (editBtn.textContent === 'Edit') {
+        viewFields.forEach(el => el.style.display = 'none');
+        editFields.forEach(el => el.style.display = 'inline-block');
+        editBtn.textContent = 'Save';
+      } else {
+        // Save values
+        viewFields.forEach((el, i) => {
+          el.textContent = editFields[i].value;
+          el.style.display = 'inline-block';
+          editFields[i].style.display = 'none';
+        });
+        editBtn.textContent = 'Edit';
+      }
+    }
+  </script>
+
+</body>
+</html>

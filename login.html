@@ -199,10 +199,30 @@
       return;
     }
 
-    alert("Login successful!");
-    // Optional: Add redirect or backend call here
+    fetch("login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(response => response.text())
+    .then(result => {
+      if (result === "admin") {
+        window.location.href = "admindashboard.html";
+      } else if (result === "operator") {
+        window.location.href = "operatordb.html";
+      } else if (result === "driver") {
+        window.location.href = "driverdashboard.html";
+      } else {
+        alert(result);
+      }
+    })
+    .catch(error => {
+      console.error("Login error:", error);
+      alert("Login failed. Try again.");
+    });
   }
 </script>
-
 </body>
 </html>

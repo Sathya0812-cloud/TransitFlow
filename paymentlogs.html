@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Logs - TransitFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f4f4f4;
+    }
+
+    .sidebar {
+      width: 230px;
+      background-color: #11d3c6;
+      height: 100vh;
+      padding: 30px 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 20px;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #0fbcb1;
+    }
+
+    .sidebar a.active {
+      background-color: #f5f5f5;
+      color: #222;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    #searchBar {
+      float: right;
+      padding: 6px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 200px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fbeeee;
+      color: #333;
+    }
+
+    td.status {
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>TransitFlow</h2>
+    <a href="manageoperator.html">Manage Operator</a>
+    <a href="managedrivers.html">Manage Drivers</a>
+    <a href="managevehicles.html">Manage Vehicles</a>
+    <a href="manageroute.html">Manage Route</a>
+    <a class="active" href="paymentlogs.html">Payment Logs</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Payment Logs</h1>
+    <input type="text" id="searchBar" onkeyup="filterLogs()" placeholder="Search...">
+
+    <table id="logsTable">
+      <thead>
+        <tr>
+          <th>Transaction ID</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TNX16334</td>
+          <td>Jul 31, 2024</td>
+          <td>$ 100.00</td>
+          <td class="status">Completed</td>
+        </tr>
+        <tr>
+          <td>GTH37458</td>
+          <td>Jul 10, 2025</td>
+          <td>$ 20.00</td>
+          <td class="status">Completed</td>
+        </tr>
+        <tr>
+          <td>SHA84858</td>
+          <td>Jun 25, 2025</td>
+          <td>$ 50.00</td>
+          <td class="status">Credit Card</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function filterLogs() {
+      const input = document.getElementById("searchBar");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("logsTable");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
